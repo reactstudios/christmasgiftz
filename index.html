@@ -13,17 +13,20 @@ body::before{content:"";position:fixed;inset:0;background:url('https://images.un
 h1,h2,h3{color:#b99600;}
 .btn{background:linear-gradient(135deg,#ffd700,#fff099);border:none;padding:16px 40px;border-radius:50px;font-size:1.05rem;font-weight:600;cursor:pointer;box-shadow:0 10px 25px rgba(255,215,0,.45);margin:5px;}
 .bigReward{font-size:2.7rem;font-weight:800;color:#d4a200;margin:20px 0;text-shadow:0 0 15px gold;}
-.santaBox{max-width:320px;margin:25px auto;}
-.santaBox img{width:100%;animation:floatSanta 4s ease-in-out infinite,glowSanta 2.5s ease-in-out infinite;}
+.santaBox{max-width:320px;margin:25px auto;position:relative;z-index:1000;}
+.santaBox img{width:100%;animation:floatSanta 4s ease-in-out infinite,glowSanta 2.5s ease-in-out infinite;position:relative;z-index:1000;}
 @keyframes floatSanta{0%{transform:translateY(0)}50%{transform:translateY(-14px)}100%{transform:translateY(0)}}
 @keyframes glowSanta{0%{filter:drop-shadow(0 0 5px gold)}50%{filter:drop-shadow(0 0 22px gold)}100%{filter:drop-shadow(0 0 5px gold)}}
 #wheelOverlay,#rewardOverlay,#final{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);justify-content:center;align-items:center;z-index:1000;}
 #wheelBox,#rewardBox,#finalBox{background:#fff;padding:25px;border-radius:25px;text-align:center;}
 #wheelContainer{width:280px;height:280px;margin:auto;position:relative;cursor:pointer;}
-#pointer{position:absolute;top:-14px;left:50%;transform:translateX(-50%);border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:28px solid #FFD700;}
+#pointer{position:absolute;top:-14px;left:50%;transform:translateX(-50%);border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:28px solid #FFD700;z-index:10;}
 .progressContainer{width:100%;background:#eee;border-radius:50px;margin:20px 0;height:22px;overflow:hidden;}
 .progressBar{height:100%;width:0%;background:linear-gradient(135deg,#ffd700,#ffb347);border-radius:50px;transition:width 0.6s ease;}
 input{padding:10px;margin:5px 0;width:80%;border-radius:8px;border:1px solid #ccc;}
+.rewardImg{width:120px;margin:15px auto;display:block;border-radius:15px;}
+#finalBox{margin:auto;position:relative;top:50%;transform:translateY(-50%);}
+#refMessage{font-size:0.9rem;color:#555;margin-top:5px;}
 </style>
 </head>
 <body>
@@ -56,6 +59,7 @@ input{padding:10px;margin:5px 0;width:80%;border-radius:8px;border:1px solid #cc
 <div id="rewardBox" class="card" style="max-width:320px">
 <h2>🎉 You Won!</h2>
 <div id="rewardText" class="bigReward"></div>
+<img id="rewardImgPopup" class="rewardImg" src="" alt="Your Reward">
 <button class="btn" id="continueBtn">Continue</button>
 <p style="margin-top:10px; font-size:0.95rem; color:#555;">Thanks, now complete a survey to claim your reward</p>
 </div>
@@ -66,6 +70,8 @@ input{padding:10px;margin:5px 0;width:80%;border-radius:8px;border:1px solid #cc
 <div id="finalBox" class="card" style="max-width:400px">
 <h2>🎄 Reward Claimed</h2>
 <div id="finalReward" class="bigReward"></div>
+<img id="rewardImage" class="rewardImg" src="" alt="Your Reward">
+<p id="rewardLinkText"></p>
 <p>✅ Thank you for participating.<br>🎅 Wait till <b>December 25</b> to receive your reward.</p>
 
 <h3>👥 Invite Friends to Fill Your Address</h3>
@@ -75,6 +81,7 @@ input{padding:10px;margin:5px 0;width:80%;border-radius:8px;border:1px solid #cc
 <p id="inviteStatus">0 / 7 Friends Invited</p>
 <input type="text" id="refLink" readonly>
 <button class="btn" id="copyBtn">📋 Copy Link</button>
+<p id="refMessage">When all the 7 friends open the link then only you can claim</p>
 
 <div id="shareButtons" style="margin:15px 0;">
 <button class="btn" id="whatsappBtn">📱 WhatsApp</button>
@@ -88,6 +95,8 @@ input{padding:10px;margin:5px 0;width:80%;border-radius:8px;border:1px solid #cc
 <input type="email" id="userEmail" placeholder="Your Email" required><br>
 <button type="submit" class="btn">Submit</button>
 </form>
+
+<button class="btn hidden" id="claimBtn">🎁 Claim Your Reward</button>
 <p id="formMsg"></p>
 </div>
 </div>
@@ -102,36 +111,37 @@ const wheelCanvas=document.getElementById("wheel");
 const ctx=wheelCanvas.getContext("2d");
 const rewardOverlay=document.getElementById("rewardOverlay");
 const rewardText=document.getElementById("rewardText");
+const rewardImgPopup=document.getElementById("rewardImgPopup");
 const finalBox=document.getElementById("final");
 const finalReward=document.getElementById("finalReward");
+const rewardImage=document.getElementById("rewardImage");
+const rewardLinkText=document.getElementById("rewardLinkText");
 const progressBar=document.getElementById("progressBar");
 const inviteStatus=document.getElementById("inviteStatus");
 const refLink=document.getElementById("refLink");
 const userForm=document.getElementById("userForm");
 const formMsg=document.getElementById("formMsg");
+const claimBtn=document.getElementById("claimBtn");
 
-// Rewards
+// Rewards with affiliate link, image, and color
 const rewards=[
-{name:"💳 Gift Card",weight:40,color:"#FFD700"},
-{name:"🎁 Amazon Voucher",weight:30,color:"#FFB347"},
-{name:"🎧 Headphones",weight:15,color:"#FF8C00"},
-{name:"⌚ Smartwatch",weight:10,color:"#FFA500"},
-{name:"📱 Smartphone",weight:5,color:"#FFC300"}
+{name:"iPhone 17 Pro Max 2 TB",weight:10,link:"https://www.amazon.in/dp/B0FQF331K6/?tag=reactstudios2-21",img:"https://m.media-amazon.com/images/I/71MXmswILHL._SX679_.jpg",color:"#FFD700"},
+{name:"Samsung Galaxy Watch8 Classic",weight:20,link:"https://www.amazon.in/Samsung-Processor-Stainless-Monitoring-Anti-oxidant/dp/B0FDQKTFWY/?tag=reactstudios2-21",img:"https://m.media-amazon.com/images/I/81JDB+5rbiL._SX679_.jpg",color:"#FFB347"},
+{name:"Sony WH-XB910N Headphones",weight:25,link:"https://www.amazon.in/Sony-WH-XB910N-Cancelling-Headphones-Performance/dp/B09GKC3NSH/?tag=reactstudios2-21",img:"https://m.media-amazon.com/images/I/71czPeQzIwL._SX522_.jpg",color:"#FF8C00"},
+{name:"Amazon Pay Gift Card",weight:30,link:"https://www.amazon.in/Amazon-Grey-mail-Gift-Card/dp/B018TV9HIM/?tag=reactstudios2-21",img:"https://m.media-amazon.com/images/I/31pEIqONsqL._SX342_SY445_QL70_FMwebp_.jpg",color:"#FFA500"},
+{name:"XIAOMI Pad 7 Nano Display",weight:15,link:"https://www.amazon.in/Xiaomi-Pad-Smartchoice-Snapdragon-Anti-Reflective/dp/B0DW4GMZ9W/?tag=reactstudios2-21",img:"https://m.media-amazon.com/images/I/71yZPdov-SL._SX522_.jpg",color:"#FFC300"}
 ];
 
 // Visitor ID for referral
 let visitorID = localStorage.getItem("visitorID");
-if(!visitorID){
-  visitorID = "user"+Math.floor(Math.random()*1000000);
-  localStorage.setItem("visitorID",visitorID);
-}
+if(!visitorID){visitorID = "user"+Math.floor(Math.random()*1000000); localStorage.setItem("visitorID",visitorID);}
 refLink.value = location.origin+location.pathname+"?ref="+visitorID;
 
 // Invite count
 let inviteCount = parseInt(localStorage.getItem("inviteCount")||0);
 const INVITE_GOAL = 7;
 
-// Check if this visit has a referral
+// Check referral
 const params = new URLSearchParams(location.search);
 if(params.get("ref") && params.get("ref")!==visitorID){
   const key = "ref_"+params.get("ref");
@@ -142,63 +152,74 @@ if(params.get("ref") && params.get("ref")!==visitorID){
   }
 }
 
-// Draw wheel
+// Draw wheel with images and slice colors
 function drawWheel(){
-const total=rewards.length;
-const angle=(2*Math.PI)/total;
-ctx.clearRect(0,0,280,280);
-rewards.forEach((r,i)=>{
-ctx.beginPath();
-ctx.moveTo(140,140);
-ctx.arc(140,140,140,i*angle,(i+1)*angle);
-ctx.fillStyle=r.color;
-ctx.fill();
-ctx.stroke();
-ctx.save();
-ctx.translate(140,140);
-ctx.rotate((i+0.5)*angle);
-ctx.textAlign="right";
-ctx.fillStyle="#222";
-ctx.font="bold 14px Arial";
-ctx.fillText(r.name,130,5);
-ctx.restore();
-});
+  const total = rewards.length;
+  const angle = (2*Math.PI)/total;
+  ctx.clearRect(0,0,280,280);
+  rewards.forEach((r,i)=>{
+    const startAngle = i*angle;
+    const endAngle = (i+1)*angle;
+    ctx.beginPath();
+    ctx.moveTo(140,140);
+    ctx.arc(140,140,140,startAngle,endAngle);
+    ctx.fillStyle = r.color;
+    ctx.fill();
+    ctx.strokeStyle="#222";
+    ctx.stroke();
+    
+    // Draw image rotated to slice center
+    const img = new Image();
+    img.src = r.img;
+    img.onload = ()=>{
+      const midAngle = startAngle + angle/2;
+      const imgX = 140 + Math.cos(midAngle)*70 - 25;
+      const imgY = 140 + Math.sin(midAngle)*70 - 25;
+      ctx.drawImage(img,imgX,imgY,50,50);
+    };
+  });
 }
 drawWheel();
 
-// Pick reward
-function pickReward(){
-const totalWeight = rewards.reduce((sum,r)=>sum+r.weight,0);
-let rand = Math.random()*totalWeight;
-for(const r of rewards){
-if(rand<r.weight) return r.name;
-rand-=r.weight;
-}
+// Pick reward by angle
+function pickRewardByAngle(finalAngle){
+  const total=rewards.length;
+  const sliceAngle=360/total;
+  let index=Math.floor((360 - (finalAngle%360))/sliceAngle) % total;
+  if(index<0) index+=total;
+  return rewards[index];
 }
 
 // Update progress
 function updateProgress(){
-progressBar.style.width = Math.min(inviteCount/INVITE_GOAL*100,100)+"%";
-inviteStatus.innerText = `${inviteCount} / ${INVITE_GOAL} Friends Invited`;
-if(inviteCount>=INVITE_GOAL){userForm.classList.remove("hidden");}
+  progressBar.style.width = Math.min(inviteCount/INVITE_GOAL*100,100)+"%";
+  inviteStatus.innerText = `${inviteCount} / ${INVITE_GOAL} Friends Invited`;
+  if(inviteCount>=INVITE_GOAL){claimBtn.classList.remove("hidden");userForm.classList.remove("hidden");}
 }
 
 // Show final
 function showFinal(){
-home.classList.add("hidden");
-wheelOverlay.style.display="none";
-rewardOverlay.style.display="none";
-finalBox.style.display="block";
-finalReward.innerText = localStorage.getItem("rewardWon")||"🎁";
-updateProgress();
+  home.classList.add("hidden");
+  wheelOverlay.style.display="none";
+  rewardOverlay.style.display="none";
+  finalBox.style.display="block";
+  const rewardWon = JSON.parse(localStorage.getItem("rewardWon"));
+  if(rewardWon){
+    finalReward.innerText = rewardWon.name;
+    rewardImage.src = rewardWon.img;
+    rewardLinkText.innerHTML = `<a href="${rewardWon.link}" target="_blank">${rewardWon.link}</a>`;
+  }
+  updateProgress();
 }
 
-// Track if user already spun
+// Track spin & offerwall
 let hasSpun = localStorage.getItem("hasSpun")==="yes";
+let offerwallCompleted = localStorage.getItem("offerwallCompleted")==="yes";
 
 // Open wheel
 document.getElementById("tryLuckBtn").onclick = function(){
-  if(hasSpun){alert("🎄 You have already spun the wheel!"); return;}
+  if(hasSpun && !offerwallCompleted){alert("🎄 You have already spun! Complete the offerwall to continue."); document.getElementById("continueBtn").click(); return;}
+  if(hasSpun && offerwallCompleted){showFinal(); return;}
   wheelOverlay.style.display="flex";
 }
 
@@ -207,40 +228,40 @@ wheelCanvas.onclick = function(){
   if(hasSpun) return;
   hasSpun = true;
   localStorage.setItem("hasSpun","yes");
-
-  const reward=pickReward();
-  localStorage.setItem("rewardWon",reward);
-
-  const index=rewards.findIndex(r=>r.name===reward);
-  const angle=360/rewards.length;
-  const spinDeg=1080+(360-(index*angle+angle/2));
+  const randomRotation = 1080 + Math.floor(Math.random()*360);
   wheelCanvas.style.transition="transform 4.5s cubic-bezier(.33,1,.68,1)";
-  wheelCanvas.style.transform=`rotate(${spinDeg}deg)`;
-
+  wheelCanvas.style.transform = `rotate(${randomRotation}deg)`;
   setTimeout(()=>{
     wheelOverlay.style.display="none";
-    rewardText.innerText=reward;
+    const reward = pickRewardByAngle(randomRotation);
+    localStorage.setItem("rewardWon",JSON.stringify(reward));
+    rewardText.innerText = reward.name;
+    rewardImgPopup.src = reward.img;
     rewardOverlay.style.display="flex";
   },4500);
 }
 
 // Continue → Offerwall
 document.getElementById("continueBtn").onclick=function(){
-const returnUrl=encodeURIComponent(location.origin+location.pathname+"?completed=1");
-window.location.href="https://YOUR_OFFERWALL_LINK?return_url="+returnUrl;
+  const returnUrl = encodeURIComponent(location.origin + location.pathname + "?completed=1");
+  window.location.href = "https://YOUR_OFFERWALL_LINK?return_url=" + returnUrl;
 }
 
 // Final page if returning from offerwall
-if(params.get("completed")==="1"){showFinal();}
+if(params.get("completed")==="1"){
+  offerwallCompleted = true;
+  localStorage.setItem("offerwallCompleted","yes");
+  showFinal();
+}
 
 // Save address
 function saveUser(e){
-e.preventDefault();
-localStorage.setItem("userName",document.getElementById("userName").value);
-localStorage.setItem("userEmail",document.getElementById("userEmail").value);
-formMsg.innerText="✅ Details saved! Thank you!";
-userForm.reset();
-updateProgress();
+  e.preventDefault();
+  localStorage.setItem("userName",document.getElementById("userName").value);
+  localStorage.setItem("userEmail",document.getElementById("userEmail").value);
+  formMsg.innerText="✅ Details saved! Thank you!";
+  userForm.reset();
+  updateProgress();
 }
 
 // Referral sharing
@@ -250,8 +271,17 @@ document.getElementById("telegramBtn").onclick = function(){window.open(`https:/
 document.getElementById("twitterBtn").onclick = function(){window.open(`https://twitter.com/intent/tweet?url=${refLink.value}&text=Claim your Christmas gift!`,'_blank');}
 document.getElementById("instagramBtn").onclick = function(){alert("Copy your referral link and share on Instagram!");}
 
+// Claim button
+claimBtn.onclick = function(){
+  const rewardWon = JSON.parse(localStorage.getItem("rewardWon"));
+  if(inviteCount<INVITE_GOAL){alert("❌ Invite 7 friends to unlock the claim button!"); return;}
+  if(!offerwallCompleted){alert("❌ Complete the offerwall first!"); return;}
+  if(rewardWon) window.open(rewardWon.link,"_blank");
+}
+
 // Update progress on load
 updateProgress();
 </script>
 </body>
 </html>
+
