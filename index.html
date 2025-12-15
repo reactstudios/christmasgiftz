@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChristmassGiftz 🎄</title>
+<style>
+body{margin:0;font-family:system-ui,Segoe UI;background:linear-gradient(135deg,#fffbe6,#fff2b3);color:#222;overflow-x:hidden;}
+body::before{content:"";position:fixed;inset:0;background:url('https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1600&q=80');background-size:cover;opacity:.12;z-index:-1;}
+.container{max-width:900px;margin:auto;padding:24px;text-align:center;}
+.card{background:rgba(255,255,255,.95);border-radius:26px;padding:40px 30px;margin-top:30px;text-align:center;}
+.hidden{display:none;}
+h1,h2,h3{color:#b99600;}
+.btn{background:linear-gradient(135deg,#ffd700,#fff099);border:none;padding:16px 40px;border-radius:50px;font-size:1.05rem;font-weight:600;cursor:pointer;box-shadow:0 10px 25px rgba(255,215,0,.45);margin:5px;}
+.bigReward{font-size:2.7rem;font-weight:800;color:#d4a200;margin:20px 0;text-shadow:0 0 15px gold;}
+.santaBox{max-width:320px;margin:25px auto;}
+.santaBox img{width:100%;animation:floatSanta 4s ease-in-out infinite,glowSanta 2.5s ease-in-out infinite;}
+@keyframes floatSanta{0%{transform:translateY(0)}50%{transform:translateY(-14px)}100%{transform:translateY(0)}}
+@keyframes glowSanta{0%{filter:drop-shadow(0 0 5px gold)}50%{filter:drop-shadow(0 0 22px gold)}100%{filter:drop-shadow(0 0 5px gold)}}
+#wheelOverlay,#rewardOverlay,#final{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);justify-content:center;align-items:center;z-index:1000;}
+#wheelBox,#rewardBox,#finalBox{background:#fff;padding:25px;border-radius:25px;text-align:center;}
+#wheelContainer{width:280px;height:280px;margin:auto;position:relative;cursor:pointer;}
+#pointer{position:absolute;top:-14px;left:50%;transform:translateX(-50%);border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:28px solid #FFD700;}
+.progressContainer{width:100%;background:#eee;border-radius:50px;margin:20px 0;height:22px;overflow:hidden;}
+.progressBar{height:100%;width:0%;background:linear-gradient(135deg,#ffd700,#ffb347);border-radius:50px;transition:width 0.6s ease;}
+input{padding:10px;margin:5px 0;width:80%;border-radius:8px;border:1px solid #ccc;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HOME -->
+<div id="home" class="card">
+<h1>🎄 ChristmassGiftz 🎁</h1>
+<p>Spin the wheel & win a Christmas reward 🎅</p>
+<div class="santaBox">
+<img src="https://images.unsplash.com/photo-1608889175250-c3b0c1667b5d?auto=format&fit=crop&w=800&q=80" alt="Santa with gifts">
+</div>
+<button class="btn" id="tryLuckBtn">🎁 Try My Luck</button>
+</div>
+
+<!-- SPIN WHEEL -->
+<div id="wheelOverlay">
+<div id="wheelBox">
+<h2>🎡 Spin the Wheel</h2>
+<div id="wheelContainer">
+<canvas id="wheel" width="280" height="280"></canvas>
+<div id="pointer"></div>
+</div>
+<p>Tap the wheel to spin 🎡</p>
+</div>
+</div>
+
+<!-- REWARD POPUP -->
+<div id="rewardOverlay">
+<div id="rewardBox" class="card" style="max-width:320px">
+<h2>🎉 You Won!</h2>
+<div id="rewardText" class="bigReward"></div>
+<button class="btn" id="continueBtn">Continue</button>
+<p style="margin-top:10px; font-size:0.95rem; color:#555;">Thanks, now complete a survey to claim your reward</p>
+</div>
+</div>
+
+<!-- FINAL PAGE -->
+<div id="final">
+<div id="finalBox" class="card" style="max-width:400px">
+<h2>🎄 Reward Claimed</h2>
+<div id="finalReward" class="bigReward"></div>
+<p>✅ Thank you for participating.<br>🎅 Wait till <b>December 25</b> to receive your reward.</p>
+
+<h3>👥 Invite Friends to Fill Your Address</h3>
+<div class="progressContainer">
+<div class="progressBar" id="progressBar"></div>
+</div>
+<p id="inviteStatus">0 / 7 Friends Invited</p>
+<input type="text" id="refLink" readonly>
+<button class="btn" id="copyBtn">📋 Copy Link</button>
+
+<div id="shareButtons" style="margin:15px 0;">
+<button class="btn" id="whatsappBtn">📱 WhatsApp</button>
+<button class="btn" id="telegramBtn">✈ Telegram</button>
+<button class="btn" id="twitterBtn">🐦 Twitter</button>
+<button class="btn" id="instagramBtn">📸 Instagram</button>
+</div>
+
+<form id="userForm" class="hidden" onsubmit="saveUser(event)">
+<input type="text" id="userName" placeholder="Your Name" required><br>
+<input type="email" id="userEmail" placeholder="Your Email" required><br>
+<button type="submit" class="btn">Submit</button>
+</form>
+<p id="formMsg"></p>
+</div>
+</div>
+
+</div>
+
+<script>
+// Elements
+const home=document.getElementById("home");
+const wheelOverlay=document.getElementById("wheelOverlay");
+const wheelCanvas=document.getElementById("wheel");
+const ctx=wheelCanvas.getContext("2d");
+const rewardOverlay=document.getElementById("rewardOverlay");
+const rewardText=document.getElementById("rewardText");
+const finalBox=document.getElementById("final");
+const finalReward=document.getElementById("finalReward");
+const progressBar=document.getElementById("progressBar");
+const inviteStatus=document.getElementById("inviteStatus");
+const refLink=document.getElementById("refLink");
+const userForm=document.getElementById("userForm");
+const formMsg=document.getElementById("formMsg");
+
+// Rewards
+const rewards=[
+{name:"💳 Gift Card",weight:40,color:"#FFD700"},
+{name:"🎁 Amazon Voucher",weight:30,color:"#FFB347"},
+{name:"🎧 Headphones",weight:15,color:"#FF8C00"},
+{name:"⌚ Smartwatch",weight:10,color:"#FFA500"},
+{name:"📱 Smartphone",weight:5,color:"#FFC300"}
+];
+
+// Visitor ID for referral
+let visitorID = localStorage.getItem("visitorID");
+if(!visitorID){
+  visitorID = "user"+Math.floor(Math.random()*1000000);
+  localStorage.setItem("visitorID",visitorID);
+}
+refLink.value = location.origin+location.pathname+"?ref="+visitorID;
+
+// Invite count
+let inviteCount = parseInt(localStorage.getItem("inviteCount")||0);
+const INVITE_GOAL = 7;
+
+// Check if this visit has a referral
+const params = new URLSearchParams(location.search);
+if(params.get("ref") && params.get("ref")!==visitorID){
+  const key = "ref_"+params.get("ref");
+  if(!localStorage.getItem(key)){
+    localStorage.setItem(key,"1");
+    inviteCount++;
+    localStorage.setItem("inviteCount",inviteCount);
+  }
+}
+
+// Draw wheel
+function drawWheel(){
+const total=rewards.length;
+const angle=(2*Math.PI)/total;
+ctx.clearRect(0,0,280,280);
+rewards.forEach((r,i)=>{
+ctx.beginPath();
+ctx.moveTo(140,140);
+ctx.arc(140,140,140,i*angle,(i+1)*angle);
+ctx.fillStyle=r.color;
+ctx.fill();
+ctx.stroke();
+ctx.save();
+ctx.translate(140,140);
+ctx.rotate((i+0.5)*angle);
+ctx.textAlign="right";
+ctx.fillStyle="#222";
+ctx.font="bold 14px Arial";
+ctx.fillText(r.name,130,5);
+ctx.restore();
+});
+}
+drawWheel();
+
+// Pick reward
+function pickReward(){
+const totalWeight = rewards.reduce((sum,r)=>sum+r.weight,0);
+let rand = Math.random()*totalWeight;
+for(const r of rewards){
+if(rand<r.weight) return r.name;
+rand-=r.weight;
+}
+}
+
+// Update progress
+function updateProgress(){
+progressBar.style.width = Math.min(inviteCount/INVITE_GOAL*100,100)+"%";
+inviteStatus.innerText = `${inviteCount} / ${INVITE_GOAL} Friends Invited`;
+if(inviteCount>=INVITE_GOAL){userForm.classList.remove("hidden");}
+}
+
+// Show final
+function showFinal(){
+home.classList.add("hidden");
+wheelOverlay.style.display="none";
+rewardOverlay.style.display="none";
+finalBox.style.display="block";
+finalReward.innerText = localStorage.getItem("rewardWon")||"🎁";
+updateProgress();
+}
+
+// Track if user already spun
+let hasSpun = localStorage.getItem("hasSpun")==="yes";
+
+// Open wheel
+document.getElementById("tryLuckBtn").onclick = function(){
+  if(hasSpun){alert("🎄 You have already spun the wheel!"); return;}
+  wheelOverlay.style.display="flex";
+}
+
+// Spin
+wheelCanvas.onclick = function(){
+  if(hasSpun) return;
+  hasSpun = true;
+  localStorage.setItem("hasSpun","yes");
+
+  const reward=pickReward();
+  localStorage.setItem("rewardWon",reward);
+
+  const index=rewards.findIndex(r=>r.name===reward);
+  const angle=360/rewards.length;
+  const spinDeg=1080+(360-(index*angle+angle/2));
+  wheelCanvas.style.transition="transform 4.5s cubic-bezier(.33,1,.68,1)";
+  wheelCanvas.style.transform=`rotate(${spinDeg}deg)`;
+
+  setTimeout(()=>{
+    wheelOverlay.style.display="none";
+    rewardText.innerText=reward;
+    rewardOverlay.style.display="flex";
+  },4500);
+}
+
+// Continue → Offerwall
+document.getElementById("continueBtn").onclick=function(){
+const returnUrl=encodeURIComponent(location.origin+location.pathname+"?completed=1");
+window.location.href="https://YOUR_OFFERWALL_LINK?return_url="+returnUrl;
+}
+
+// Final page if returning from offerwall
+if(params.get("completed")==="1"){showFinal();}
+
+// Save address
+function saveUser(e){
+e.preventDefault();
+localStorage.setItem("userName",document.getElementById("userName").value);
+localStorage.setItem("userEmail",document.getElementById("userEmail").value);
+formMsg.innerText="✅ Details saved! Thank you!";
+userForm.reset();
+updateProgress();
+}
+
+// Referral sharing
+document.getElementById("copyBtn").onclick = function(){refLink.select();document.execCommand("copy");alert("Referral link copied!");}
+document.getElementById("whatsappBtn").onclick = function(){window.open(`https://api.whatsapp.com/send?text=Claim your Christmas gift: ${refLink.value}`,'_blank');}
+document.getElementById("telegramBtn").onclick = function(){window.open(`https://t.me/share/url?url=${refLink.value}&text=Claim your Christmas gift!`,'_blank');}
+document.getElementById("twitterBtn").onclick = function(){window.open(`https://twitter.com/intent/tweet?url=${refLink.value}&text=Claim your Christmas gift!`,'_blank');}
+document.getElementById("instagramBtn").onclick = function(){alert("Copy your referral link and share on Instagram!");}
+
+// Update progress on load
+updateProgress();
+</script>
+</body>
+</html>
