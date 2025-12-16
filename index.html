@@ -177,6 +177,16 @@ input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 40px; border:
 </div>
 
 <script>
+<script>
+/* ========= CPX USER ID (REQUIRED) ========= */
+let userId = localStorage.getItem("cpx_user_id");
+
+if (!userId) {
+  userId = "user_" + Math.random().toString(36).substring(2, 10);
+  localStorage.setItem("cpx_user_id", userId);
+}
+/* ========================================= */
+
 const rewards=[
  {name:"iPhone 17 Pro", img:"https://m.media-amazon.com/images/I/71MXmswILHL._SX679_.jpg"},
  {name:"Galaxy Watch", img:"https://m.media-amazon.com/images/I/81JDB+5rbiL._SX679_.jpg"},
@@ -258,8 +268,11 @@ toSurvey.onclick = () => { invite.classList.add("hidden"); surveyPage.classList.
 
 openOffer.onclick = () => {
     surveyActive = true;
-    window.open("https://offers.cpx-research.com/index.php?app_id=30494", "_blank");
-};
+    window.open(
+  "https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + userId,
+  "_blank"
+);
+
 
 window.onfocus = () => {
     if(surveyActive && surveyProgress < 100) {
