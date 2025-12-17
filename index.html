@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ChristmassGiftz</title>
 
 <style>
 /* ===== RESPONSIVE BASE DESIGN ===== */
+*, *::before, *::after { box-sizing: border-box; } /* Prevents layout breaking on mobile */
+
 body{
   margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   background:linear-gradient(135deg,#fffbe6,#fff2b3);
@@ -19,68 +21,70 @@ body::before{
   background-size:cover; opacity:.12; z-index:-1;
 }
 
-.container{ width: 95%; max-width: 800px; padding: 20px; text-align: center; box-sizing: border-box; }
+.container{ width: 100%; max-width: 800px; padding: 15px; text-align: center; }
 .card{
-  background:rgba(255,255,255,.98); border-radius: 40px; padding: 60px 40px; 
+  background:rgba(255,255,255,.98); border-radius: 40px; padding: 50px 25px; 
   animation:fadeUp .7s ease; box-shadow: 0 25px 60px rgba(185, 150, 0, 0.2);
-  width: 100%; box-sizing: border-box;
+  width: 100%;
 }
 
 @media (max-width: 600px) {
-  .card { padding: 40px 20px; border-radius: 30px; }
-  h1 { font-size: 2.2rem !important; }
-  h2 { font-size: 1.8rem !important; }
-  .btn { font-size: 1.2rem !important; padding: 18px 30px !important; }
+  .card { padding: 35px 20px; border-radius: 30px; }
+  h1 { font-size: 1.8rem !important; }
+  h2 { font-size: 1.6rem !important; }
+  .btn { font-size: 1.1rem !important; padding: 16px 20px !important; width: 100% !important; }
+  .bigReward { font-size: 2.2rem !important; }
 }
 
 .hidden{display:none !important}
 h1{ font-size: 3.2rem; color:#b99600; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px;}
 h2{ font-size: 2.5rem; color:#b99600; margin-bottom: 15px;}
-p { font-size: 1.2rem; line-height: 1.5; color: #555; }
+p { font-size: 1.1rem; line-height: 1.5; color: #555; }
 
 .btn{
   background:linear-gradient(135deg,#ffd700,#fff099);
   border:none; padding:22px 50px; border-radius:100px;
   font-size: 1.4rem; font-weight:800; cursor:pointer;
   box-shadow:0 10px 25px rgba(255,215,0,0.4);
-  margin:15px auto; transition:.3s; color: #443a00;
+  margin:10px auto; transition:.3s; color: #443a00;
   display: block; width: 90%; text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.btn:hover{transform:scale(1.03); box-shadow:0 15px 35px rgba(255,215,0,0.5);}
-.btn-back { background: #eee; color: #777; font-size: 1rem; margin-top: 25px; box-shadow: none; width: auto; display: inline-block; }
+.btn:hover{transform:scale(1.02); box-shadow:0 15px 35px rgba(255,215,0,0.5);}
+.btn-back { background: #eee; color: #777; font-size: 1rem; margin-top: 25px; box-shadow: none; width: auto !important; display: inline-block; }
 
 /* Reward Popup */
-#rewardOverlay #rewardBox { width: 90%; max-width: 700px; padding: 60px 30px; }
+#rewardOverlay #rewardBox { width: 92%; max-width: 700px; padding: 40px 20px; }
 .bigReward{ font-size: 3.5rem; font-weight:900; color:#d4a200; animation:glow 2s infinite; margin: 20px 0; }
 
 #wheelOverlay, #rewardOverlay{
   display:none; position:fixed; inset:0;
   background:rgba(0,0,0,.92); justify-content:center;
-  align-items:center; z-index:1000;
+  align-items:center; z-index:1000; padding: 10px;
 }
 #wheelContainer{
-    position:relative; width: 320px; height: 320px; margin:auto;
-    border: 15px solid #d4af37; border-radius: 50%; background: #fff;
+    position:relative; width: 280px; height: 280px; margin:auto;
+    border: 10px solid #d4af37; border-radius: 50%; background: #fff;
     animation: pulse 2.5s infinite ease-in-out;
 }
-@media (min-width: 800px) { #wheelContainer { width: 450px; height: 450px; } }
+@media (min-width: 800px) { #wheelContainer { width: 450px; height: 450px; border-width: 15px; } }
 
 #pointer {
-    position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
-    width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent;
-    border-top: 50px solid #ff0000; z-index: 100;
+    position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent;
+    border-top: 40px solid #ff0000; z-index: 100;
 }
 canvas{ border-radius:50%; width: 100%; height: 100%; transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1); }
 
-.progressContainer{ width:100%; background:#f0f0f0; height:30px; border-radius:100px; overflow:hidden; margin: 30px 0; border: 2px solid #ddd; }
+.progressContainer{ width:100%; background:#f0f0f0; height:25px; border-radius:100px; overflow:hidden; margin: 20px 0; border: 2px solid #ddd; }
 .progressBar{ height:100%; width:0%; background:linear-gradient(90deg,#ffd700,#ffb347); transition: width 0.8s ease; }
 
-input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 40px; border: 2px solid #eee; font-size: 1.1rem; box-sizing: border-box; }
-.invite-link-box { background: #f9f9f9; padding: 15px; border-radius: 15px; border: 2px dashed #b99600; font-weight: bold; margin-bottom: 20px; font-size: 1rem; word-break: break-all; }
+input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border: 2px solid #eee; font-size: 1rem; }
+.invite-link-box { background: #f9f9f9; padding: 15px; border-radius: 15px; border: 2px dashed #b99600; font-weight: bold; margin-bottom: 20px; font-size: 0.9rem; word-break: break-all; }
 
-@keyframes fadeUp{ from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:none} }
+@keyframes fadeUp{ from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-@keyframes glow{ 0%, 100%{filter:drop-shadow(0 0 10px gold)} 50%{filter:drop-shadow(0 0 25px gold)} }
+@keyframes glow{ 0%, 100%{filter:drop-shadow(0 0 10px gold)} 50%{filter:drop-shadow(0 0 20px gold)} }
 </style>
 </head>
 <body>
@@ -90,15 +94,15 @@ input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 40px; border:
 <div id="home" class="card">
   <h1>CHRISTMASGIFTZ</h1>
   <p>Exclusive Holiday Giveaway. Try your luck and win premium prizes today!</p>
-  <img src="https://images.unsplash.com/photo-1608889175250-c3b0c1667b5d?auto=format&fit=crop&w=400" style="width:220px; max-width: 60%; margin: 20px 0; animation: pulse 3s infinite;">
+  <img src="https://images.unsplash.com/photo-1608889175250-c3b0c1667b5d?auto=format&fit=crop&w=400" style="width:200px; max-width: 60%; margin: 20px 0; animation: pulse 3s infinite;">
   <button class="btn" id="tryBtn">SPIN NOW</button>
-  <div style="margin-top:30px">
+  <div style="margin-top:20px">
     <script src="https://www.highperformanceformat.com/9c7d946e2105f9e6a07ffc49d5b61345/invoke.js"></script>
   </div>
 </div>
 
 <div id="wheelOverlay">
-  <div id="wheelBox" class="card" style="width: 90%; max-width: 550px;">
+  <div id="wheelBox" class="card" style="width: 100%; max-width: 550px;">
     <h2>TAP TO SPIN</h2>
     <div id="wheelContainer">
       <canvas id="wheel" width="450" height="450"></canvas>
@@ -111,7 +115,7 @@ input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 40px; border:
   <div id="rewardBox" class="card">
     <h3>CONGRATULATIONS!</h3>
     <div id="rewardText" class="bigReward"></div>
-    <img id="rewardImg" style="width:280px; max-width: 80%; border-radius:30px; border: 5px solid gold; margin-bottom: 30px;">
+    <img id="rewardImg" style="width:240px; max-width: 80%; border-radius:30px; border: 5px solid gold; margin-bottom: 20px;">
     <button class="btn" id="goInvite">CLAIM MY PRIZE</button>
   </div>
 </div>
@@ -124,10 +128,9 @@ input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 40px; border:
   <button class="btn" id="ig" style="background:#E1306C; color:white;">Instagram</button>
   <button class="btn" id="tg" style="background:#0088cc; color:white;">Telegram</button>
   <button class="btn" id="tw" style="background:#1DA1F2; color:white;">Twitter</button>
-  <p id="inviteStatus" style="font-weight: 800; font-size: 1.5rem; margin: 20px 0;">Invited: 0 / 7</p>
+  <p id="inviteStatus" style="font-weight: 800; font-size: 1.3rem; margin: 15px 0;">Invited: 0 / 7</p>
 
   <div style="margin: 20px 0">
-    <script async data-cfasync="false" src="https://pl28263882.effectivegatecpm.com/a5/d6/8c/a5d68c121933c617e50c71ad37c8ee7a.js"></script>
     <div id="container-dd91a6316ac3de5bf92224509e1eba7e"></div>
   </div>
 
@@ -136,30 +139,14 @@ input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 40px; border:
 
 <div id="surveyPage" class="card hidden">
   <h2>VERIFICATION</h2>
-  <p>Complete the task below. Progress updates on completion , The more you complete the more have a chance to won , which is a very necessary step to claim reward.</p>
+  <p>Complete the task below to claim your reward.</p>
   <div class="progressContainer"><div id="bar" class="progressBar"></div></div>
-  <p id="progStatus" style="font-size: 1.5rem; font-weight: bold;">0% Complete</p>
+  <p id="progStatus" style="font-size: 1.3rem; font-weight: bold;">0% Complete</p>
   
-  <!-- SURVEY PAGE BANNER AD -->
-<div style="margin:25px auto; width:300px; text-align:center;">
-  <div style="font-size:12px; color:#999; margin-bottom:6px;">
-    Advertisement
+  <div style="margin:20px auto; max-width:300px; text-align:center;">
+    <div style="font-size:12px; color:#999; margin-bottom:6px;">Advertisement</div>
+    <div id="survey-ad-slot"></div>
   </div>
-
-  <script type="text/javascript">
-    atOptions = {
-      'key' : '9c7d946e2105f9e6a07ffc49d5b61345',
-      'format' : 'iframe',
-      'height' : 250,
-      'width' : 300,
-      'params' : {}
-    };
-  </script>
-  <script
-    type="text/javascript"
-    src="https://www.highperformanceformat.com/9c7d946e2105f9e6a07ffc49d5b61345/invoke.js">
-  </script>
-</div>
 
   <button class="btn" id="openOffer">OPEN SURVEY TASK</button>
   <button class="btn hidden" id="toDetails" style="background: #28a745; color: white;">PROCEED TO SHIPPING</button>
@@ -177,15 +164,9 @@ input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 40px; border:
 </div>
 
 <script>
-<script>
-/* ========= CPX USER ID (REQUIRED) ========= */
-let userId = localStorage.getItem("cpx_user_id");
-
-if (!userId) {
-  userId = "user_" + Math.random().toString(36).substring(2, 10);
-  localStorage.setItem("cpx_user_id", userId);
-}
-/* ========================================= */
+/* ========= CPX USER ID ========= */
+let userId = localStorage.getItem("cpx_user_id") || "user_" + Math.random().toString(36).substring(2, 10);
+localStorage.setItem("cpx_user_id", userId);
 
 const rewards=[
  {name:"iPhone 17 Pro", img:"https://m.media-amazon.com/images/I/71MXmswILHL._SX679_.jpg"},
@@ -224,79 +205,72 @@ function drawWheel() {
 }
 drawWheel();
 
-tryBtn.onclick = () => { home.classList.add("hidden"); wheelOverlay.style.display = "flex"; };
+document.getElementById("tryBtn").onclick = () => { 
+    document.getElementById("home").classList.add("hidden"); 
+    document.getElementById("wheelOverlay").style.display = "flex"; 
+};
 
-wheel.onclick = () => {
+canvas.onclick = () => {
     if(selectedReward) return;
     const randomIdx = Math.floor(Math.random() * totalSlices);
     selectedReward = rewards[randomIdx];
     const stopAt = 3600 + (270 - (randomIdx * sliceDeg) - (sliceDeg / 2));
     canvas.style.transform = `rotate(${stopAt}deg)`;
     setTimeout(() => {
-        wheelOverlay.style.display = "none";
+        document.getElementById("wheelOverlay").style.display = "none";
         document.getElementById("rewardText").innerText = selectedReward.name;
         document.getElementById("rewardImg").src = selectedReward.img;
         document.getElementById("rewardOverlay").style.display = "flex";
     }, 5500);
 };
 
-goInvite.onclick = () => { 
-    // ?? POP-UNDER AD (ID 28163383)
-    const pop = document.createElement("script");
-    pop.src = "https://pl28263882.effectivegatecpm.com/a5/d6/8c/a5d68c121933c617e50c71ad37c8ee7a.js";
-    document.body.appendChild(pop);
-
-    // continue site flow
-    rewardOverlay.style.display = "none";
-    invite.classList.remove("hidden");
+document.getElementById("goInvite").onclick = () => { 
+    document.getElementById("rewardOverlay").style.display = "none";
+    document.getElementById("invite").classList.remove("hidden");
 };
-
 
 function handleInvite(url) {
     inviteCount++;
     document.getElementById("inviteStatus").innerText = `Invited: ${inviteCount} / 7`;
-    if(inviteCount >= 7) toSurvey.classList.remove("hidden");
+    if(inviteCount >= 7) document.getElementById("toSurvey").classList.remove("hidden");
     if(url !== "#") window.open(url, "_blank");
 }
 
-wa.onclick = () => handleInvite("whatsapp://send?text=" + window.location.href);
-ig.onclick = () => { alert("Post Link to Story!"); handleInvite("#"); };
-tg.onclick = () => handleInvite("https://t.me/share/url?url=" + window.location.href);
-tw.onclick = () => handleInvite("https://twitter.com/intent/tweet?url=" + window.location.href);
+document.getElementById("wa").onclick = () => handleInvite("whatsapp://send?text=" + encodeURIComponent(window.location.href));
+document.getElementById("ig").onclick = () => { alert("Post Link to Story!"); handleInvite("#"); };
+document.getElementById("tg").onclick = () => handleInvite("https://t.me/share/url?url=" + encodeURIComponent(window.location.href));
+document.getElementById("tw").onclick = () => handleInvite("https://twitter.com/intent/tweet?url=" + encodeURIComponent(window.location.href));
 
-toSurvey.onclick = () => { invite.classList.add("hidden"); surveyPage.classList.remove("hidden"); };
+document.getElementById("toSurvey").onclick = () => { 
+    document.getElementById("invite").classList.add("hidden"); 
+    document.getElementById("surveyPage").classList.remove("hidden"); 
+};
 
-openOffer.onclick = () => {
+document.getElementById("openOffer").onclick = () => {
     surveyActive = true;
-    window.open(
-  "https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + userId,
-  "_blank"
-);
-
+    window.open("https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + userId, "_blank");
+};
 
 window.onfocus = () => {
     if(surveyActive && surveyProgress < 100) {
         surveyProgress += 25;
         document.getElementById("bar").style.width = surveyProgress + "%";
         document.getElementById("progStatus").innerText = `${surveyProgress}% Complete`;
-        if(surveyProgress >= 25) toDetails.classList.remove("hidden");
-        if(surveyProgress >= 100) openOffer.innerText = "VERIFIED ?";
+        if(surveyProgress >= 25) document.getElementById("toDetails").classList.remove("hidden");
+        if(surveyProgress >= 100) document.getElementById("openOffer").innerText = "VERIFIED âœ“";
         surveyActive = false;
     }
 };
 
-toDetails.onclick = () => { surveyPage.classList.add("hidden"); details.classList.remove("hidden"); };
-backToSurvey.onclick = () => { details.classList.add("hidden"); surveyPage.classList.remove("hidden"); };
+document.getElementById("toDetails").onclick = () => { 
+    document.getElementById("surveyPage").classList.add("hidden"); 
+    document.getElementById("details").classList.remove("hidden"); 
+};
+document.getElementById("backToSurvey").onclick = () => { 
+    document.getElementById("details").classList.add("hidden"); 
+    document.getElementById("surveyPage").classList.remove("hidden"); 
+};
 </script>
-
-<!-- SOCIAL AD (EffectiveGateCPM – ID 28166883) -->
-<script
-  type="text/javascript"
-  src="https://pl28267382.effectivegatecpm.com/a1/2f/06/a12f06e4827b79be7b82dd12c3c89fa0.js">
-</script>
-
-</body>
-</html>
 
 </body>
 </html>
