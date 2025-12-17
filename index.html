@@ -144,8 +144,12 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
 </div>
 
 <script>
-let userId = localStorage.getItem("cpx_user_id") || "user_" + Math.random().toString(36).substring(2, 10);
-localStorage.setItem("cpx_user_id", userId);
+// --- Initialize User ID ---
+let userId = localStorage.getItem("cpx_user_id");
+if (!userId || userId === "0") {
+    userId = "user_" + Math.random().toString(36).substring(2, 10);
+    localStorage.setItem("cpx_user_id", userId);
+}
 
 const rewards=[
  {name:"iPhone 17 Pro", img:"https://m.media-amazon.com/images/I/71MXmswILHL._SX679_.jpg"},
@@ -183,14 +187,9 @@ function drawWheel() {
 }
 drawWheel();
 
-// Fixed: Wheel triggers immediately, ad script loads silently
 document.getElementById("tryBtn").onclick = () => { 
     document.getElementById("home").classList.add("hidden"); 
     document.getElementById("wheelOverlay").style.display = "flex"; 
-    // Trigger ad logic here without blocking UI
-    const adScript = document.createElement("script");
-    adScript.src = "https://www.highperformanceformat.com/9c7d946e2105f9e6a07ffc49d5b61345/invoke.js";
-    document.head.appendChild(adScript);
 };
 
 canvas.onclick = () => {
@@ -229,9 +228,11 @@ document.getElementById("toSurvey").onclick = () => {
     document.getElementById("surveyPage").classList.remove("hidden"); 
 };
 
+// --- FIXED USER ID IN SURVEY ---
 document.getElementById("openOffer").onclick = () => {
+    const currentId = localStorage.getItem("cpx_user_id");
     surveyActive = true;
-    window.open("https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + userId, "_blank");
+    window.open("https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + currentId, "_blank");
 };
 
 window.onfocus = () => {
