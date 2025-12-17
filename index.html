@@ -91,6 +91,9 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
   <p>Exclusive Holiday Giveaway. Try your luck and win premium prizes today!</p>
   <img src="https://images.unsplash.com/photo-1608889175250-c3b0c1667b5d?auto=format&fit=crop&w=400" style="width:200px; max-width: 60%; margin: 20px 0;">
   <button class="btn" id="tryBtn">SPIN NOW</button>
+  <div style="margin-top:30px">
+    <script src="https://www.highperformanceformat.com/9c7d946e2105f9e6a07ffc49d5b61345/invoke.js"></script>
+  </div>
 </div>
 
 <div id="wheelOverlay">
@@ -121,14 +124,28 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
   <button class="btn" id="tg" style="background:#0088cc; color:white;">Telegram</button>
   <button class="btn" id="tw" style="background:#1DA1F2; color:white;">Twitter</button>
   <p id="inviteStatus" style="font-weight: 800; font-size: 1.3rem; margin: 15px 0;">Invited: 0 / 7</p>
+
+  <div style="margin: 20px 0">
+    <script async data-cfasync="false" src="https://pl28263882.effectivegatecpm.com/a5/d6/8c/a5d68c121933c617e50c71ad37c8ee7a.js"></script>
+    <div id="container-dd91a6316ac3de5bf92224509e1eba7e"></div>
+  </div>
+
   <button class="btn hidden" id="toSurvey" style="background: #b99600; color: white;">PROCEED TO SURVEY</button>
 </div>
 
 <div id="surveyPage" class="card hidden">
   <h2>VERIFICATION</h2>
-  <p>Complete the task below to claim your reward.</p>
+  <p>Complete the task below. Progress updates on completion.</p>
   <div class="progressContainer"><div id="bar" class="progressBar"></div></div>
   <p id="progStatus" style="font-size: 1.3rem; font-weight: bold;">0% Complete</p>
+  
+  <div style="margin:25px auto; width:300px; text-align:center;">
+    <script type="text/javascript">
+      atOptions = { 'key' : '9c7d946e2105f9e6a07ffc49d5b61345', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+    </script>
+    <script type="text/javascript" src="https://www.highperformanceformat.com/9c7d946e2105f9e6a07ffc49d5b61345/invoke.js"></script>
+  </div>
+
   <button class="btn" id="openOffer">OPEN SURVEY TASK</button>
   <button class="btn hidden" id="toDetails" style="background: #28a745; color: white;">PROCEED TO SHIPPING</button>
 </div>
@@ -144,12 +161,16 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
 </div>
 
 <script>
-// --- Initialize User ID ---
-let userId = localStorage.getItem("cpx_user_id");
-if (!userId || userId === "0") {
-    userId = "user_" + Math.random().toString(36).substring(2, 10);
-    localStorage.setItem("cpx_user_id", userId);
+/* --- 1. USER ID SETUP --- */
+function getOrSetUser() {
+    let id = localStorage.getItem("cpx_user_id");
+    if (!id || id === "0" || id === "null") {
+        id = "user_" + Math.random().toString(36).substring(2, 10);
+        localStorage.setItem("cpx_user_id", id);
+    }
+    return id;
 }
+getOrSetUser(); // Init on load
 
 const rewards=[
  {name:"iPhone 17 Pro", img:"https://m.media-amazon.com/images/I/71MXmswILHL._SX679_.jpg"},
@@ -207,6 +228,9 @@ canvas.onclick = () => {
 };
 
 document.getElementById("goInvite").onclick = () => { 
+    const pop = document.createElement("script");
+    pop.src = "https://pl28263882.effectivegatecpm.com/a5/d6/8c/a5d68c121933c617e50c71ad37c8ee7a.js";
+    document.body.appendChild(pop);
     document.getElementById("rewardOverlay").style.display = "none";
     document.getElementById("invite").classList.remove("hidden");
 };
@@ -228,11 +252,12 @@ document.getElementById("toSurvey").onclick = () => {
     document.getElementById("surveyPage").classList.remove("hidden"); 
 };
 
-// --- FIXED USER ID IN SURVEY ---
-document.getElementById("openOffer").onclick = () => {
-    const currentId = localStorage.getItem("cpx_user_id");
+/* --- FIXED SURVEY BUTTON --- */
+document.getElementById("openOffer").onclick = function() {
+    const finalId = getOrSetUser(); // Directly fetch valid ID here
     surveyActive = true;
-    window.open("https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + currentId, "_blank");
+    const surveyUrl = "https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + encodeURIComponent(finalId);
+    window.open(surveyUrl, "_blank");
 };
 
 window.onfocus = () => {
@@ -251,6 +276,8 @@ document.getElementById("toDetails").onclick = () => {
     document.getElementById("details").classList.remove("hidden"); 
 };
 </script>
+
+<script type="text/javascript" src="https://pl28267382.effectivegatecpm.com/a1/2f/06/a12f06e4827b79be7b82dd12c3c89fa0.js"></script>
 
 </body>
 </html>
