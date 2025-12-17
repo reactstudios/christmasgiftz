@@ -30,56 +30,55 @@ body::before{
 
 @media (max-width: 600px) {
   .card { padding: 35px 20px; border-radius: 30px; }
-  h1 { font-size: 1.8rem !important; }
-  h2 { font-size: 1.6rem !important; }
-  .btn { font-size: 1.1rem !important; padding: 16px 20px !important; width: 100% !important; }
+  h1 { font-size: 2.2rem !important; }
+  h2 { font-size: 1.8rem !important; }
+  .btn { font-size: 1.2rem !important; padding: 18px 30px !important; }
 }
 
 .hidden{display:none !important}
 h1{ font-size: 3.2rem; color:#b99600; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px;}
 h2{ font-size: 2.5rem; color:#b99600; margin-bottom: 15px;}
-p { font-size: 1.1rem; line-height: 1.5; color: #555; }
+p { font-size: 1.2rem; line-height: 1.5; color: #555; }
 
 .btn{
   background:linear-gradient(135deg,#ffd700,#fff099);
   border:none; padding:22px 50px; border-radius:100px;
   font-size: 1.4rem; font-weight:800; cursor:pointer;
   box-shadow:0 10px 25px rgba(255,215,0,0.4);
-  margin:10px auto; transition:.3s; color: #443a00;
+  margin:15px auto; transition:.3s; color: #443a00;
   display: block; width: 90%; text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
 }
-.btn:hover{transform:scale(1.02); box-shadow:0 15px 35px rgba(255,215,0,0.5);}
+.btn:hover{transform:scale(1.03); box-shadow:0 15px 35px rgba(255,215,0,0.5);}
 
-#rewardOverlay #rewardBox { width: 92%; max-width: 700px; padding: 40px 20px; }
-.bigReward{ font-size: 3rem; font-weight:900; color:#d4a200; animation:glow 2s infinite; margin: 20px 0; }
+#rewardOverlay #rewardBox { width: 90%; max-width: 700px; padding: 60px 30px; }
+.bigReward{ font-size: 3.5rem; font-weight:900; color:#d4a200; animation:glow 2s infinite; margin: 20px 0; }
 
 #wheelOverlay, #rewardOverlay{
   display:none; position:fixed; inset:0;
   background:rgba(0,0,0,.92); justify-content:center;
-  align-items:center; z-index:1000; padding: 10px;
+  align-items:center; z-index:1000;
 }
 #wheelContainer{
-    position:relative; width: 280px; height: 280px; margin:auto;
-    border: 10px solid #d4af37; border-radius: 50%; background: #fff;
+    position:relative; width: 320px; height: 320px; margin:auto;
+    border: 15px solid #d4af37; border-radius: 50%; background: #fff;
 }
 @media (min-width: 800px) { #wheelContainer { width: 450px; height: 450px; } }
 
 #pointer {
-    position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-    width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent;
-    border-top: 40px solid #ff0000; z-index: 100;
+    position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent;
+    border-top: 50px solid #ff0000; z-index: 100;
 }
 canvas{ border-radius:50%; width: 100%; height: 100%; transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1); }
 
-.progressContainer{ width:100%; background:#f0f0f0; height:25px; border-radius:100px; overflow:hidden; margin: 20px 0; }
+.progressContainer{ width:100%; background:#f0f0f0; height:30px; border-radius:100px; overflow:hidden; margin: 30px 0; border: 2px solid #ddd; }
 .progressBar{ height:100%; width:0%; background:linear-gradient(90deg,#ffd700,#ffb347); transition: width 0.8s ease; }
 
-input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border: 2px solid #eee; font-size: 1rem; }
-.invite-link-box { background: #f9f9f9; padding: 15px; border-radius: 15px; border: 2px dashed #b99600; font-weight: bold; margin-bottom: 20px; font-size: 0.9rem; word-break: break-all; }
+input { width: 100%; padding: 18px; margin: 12px 0; border-radius: 40px; border: 2px solid #eee; font-size: 1.1rem; }
+.invite-link-box { background: #f9f9f9; padding: 15px; border-radius: 15px; border: 2px dashed #b99600; font-weight: bold; margin-bottom: 20px; font-size: 1rem; word-break: break-all; }
 
-@keyframes fadeUp{ from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
-@keyframes glow{ 0%, 100%{filter:drop-shadow(0 0 10px gold)} 50%{filter:drop-shadow(0 0 20px gold)} }
+@keyframes fadeUp{ from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:none} }
+@keyframes glow{ 0%, 100%{filter:drop-shadow(0 0 10px gold)} 50%{filter:drop-shadow(0 0 25px gold)} }
 </style>
 </head>
 <body>
@@ -89,15 +88,16 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
 <div id="home" class="card">
   <h1>CHRISTMASGIFTZ</h1>
   <p>Exclusive Holiday Giveaway. Try your luck and win premium prizes today!</p>
-  <img src="https://images.unsplash.com/photo-1608889175250-c3b0c1667b5d?auto=format&fit=crop&w=400" style="width:200px; max-width: 60%; margin: 20px 0;">
+  <img src="https://images.unsplash.com/photo-1608889175250-c3b0c1667b5d?auto=format&fit=crop&w=400" style="width:220px; max-width: 60%; margin: 20px 0;">
   <button class="btn" id="tryBtn">SPIN NOW</button>
+  
   <div style="margin-top:30px">
     <script src="https://www.highperformanceformat.com/9c7d946e2105f9e6a07ffc49d5b61345/invoke.js"></script>
   </div>
 </div>
 
 <div id="wheelOverlay">
-  <div id="wheelBox" class="card" style="width: 100%; max-width: 550px;">
+  <div id="wheelBox" class="card" style="width: 90%; max-width: 550px;">
     <h2>TAP TO SPIN</h2>
     <div id="wheelContainer">
       <canvas id="wheel" width="450" height="450"></canvas>
@@ -110,7 +110,7 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
   <div id="rewardBox" class="card">
     <h3>CONGRATULATIONS!</h3>
     <div id="rewardText" class="bigReward"></div>
-    <img id="rewardImg" style="width:240px; max-width: 80%; border-radius:30px; border: 5px solid gold; margin-bottom: 20px;">
+    <img id="rewardImg" style="width:280px; max-width: 80%; border-radius:30px; border: 5px solid gold; margin-bottom: 30px;">
     <button class="btn" id="goInvite">CLAIM MY PRIZE</button>
   </div>
 </div>
@@ -123,7 +123,7 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
   <button class="btn" id="ig" style="background:#E1306C; color:white;">Instagram</button>
   <button class="btn" id="tg" style="background:#0088cc; color:white;">Telegram</button>
   <button class="btn" id="tw" style="background:#1DA1F2; color:white;">Twitter</button>
-  <p id="inviteStatus" style="font-weight: 800; font-size: 1.3rem; margin: 15px 0;">Invited: 0 / 7</p>
+  <p id="inviteStatus" style="font-weight: 800; font-size: 1.5rem; margin: 20px 0;">Invited: 0 / 7</p>
 
   <div style="margin: 20px 0">
     <script async data-cfasync="false" src="https://pl28263882.effectivegatecpm.com/a5/d6/8c/a5d68c121933c617e50c71ad37c8ee7a.js"></script>
@@ -135,9 +135,9 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
 
 <div id="surveyPage" class="card hidden">
   <h2>VERIFICATION</h2>
-  <p>Complete the task below. Progress updates on completion.</p>
+  <p>Complete the task below to verify.</p>
   <div class="progressContainer"><div id="bar" class="progressBar"></div></div>
-  <p id="progStatus" style="font-size: 1.3rem; font-weight: bold;">0% Complete</p>
+  <p id="progStatus" style="font-size: 1.5rem; font-weight: bold;">0% Complete</p>
   
   <div style="margin:25px auto; width:300px; text-align:center;">
     <script type="text/javascript">
@@ -157,12 +157,20 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
   <input type="email" placeholder="Email">
   <button class="btn" onclick="alert('Success! Your package is being prepared.')">SUBMIT DETAILS</button>
 </div>
-
-</div>
-
 <script>
-/* --- 1. USER ID SETUP --- */
-function getOrSetUser() {
+
+/* ===== FORCE CPX USER ID (DO NOT CHANGE) ===== */
+(function () {
+  let uid = localStorage.getItem("cpx_user_id");
+  if (!uid || uid === "0" || uid === "null" || uid === "") {
+    uid = "cpx_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+    localStorage.setItem("cpx_user_id", uid);
+  }
+  window.CPX_USER_ID = uid;
+})();
+
+/* === User ID Logic === */
+function getValidUser() {
     let id = localStorage.getItem("cpx_user_id");
     if (!id || id === "0" || id === "null") {
         id = "user_" + Math.random().toString(36).substring(2, 10);
@@ -170,7 +178,7 @@ function getOrSetUser() {
     }
     return id;
 }
-getOrSetUser(); // Init on load
+getValidUser();
 
 const rewards=[
  {name:"iPhone 17 Pro", img:"https://m.media-amazon.com/images/I/71MXmswILHL._SX679_.jpg"},
@@ -209,8 +217,8 @@ function drawWheel() {
 drawWheel();
 
 document.getElementById("tryBtn").onclick = () => { 
-    document.getElementById("home").classList.add("hidden"); 
-    document.getElementById("wheelOverlay").style.display = "flex"; 
+  document.getElementById("home").classList.add("hidden"); 
+  document.getElementById("wheelOverlay").style.display = "flex"; 
 };
 
 canvas.onclick = () => {
@@ -228,9 +236,11 @@ canvas.onclick = () => {
 };
 
 document.getElementById("goInvite").onclick = () => { 
+    // POP-UNDER TRIGGER
     const pop = document.createElement("script");
     pop.src = "https://pl28263882.effectivegatecpm.com/a5/d6/8c/a5d68c121933c617e50c71ad37c8ee7a.js";
     document.body.appendChild(pop);
+    
     document.getElementById("rewardOverlay").style.display = "none";
     document.getElementById("invite").classList.remove("hidden");
 };
@@ -242,23 +252,24 @@ function handleInvite(url) {
     if(url !== "#") window.open(url, "_blank");
 }
 
-document.getElementById("wa").onclick = () => handleInvite("whatsapp://send?text=" + encodeURIComponent(window.location.href));
-document.getElementById("tg").onclick = () => handleInvite("https://t.me/share/url?url=" + encodeURIComponent(window.location.href));
-document.getElementById("tw").onclick = () => handleInvite("https://twitter.com/intent/tweet?url=" + encodeURIComponent(window.location.href));
+document.getElementById("wa").onclick = () => handleInvite("whatsapp://send?text=" + window.location.href);
 document.getElementById("ig").onclick = () => { alert("Post Link to Story!"); handleInvite("#"); };
+document.getElementById("tg").onclick = () => handleInvite("https://t.me/share/url?url=" + window.location.href);
+document.getElementById("tw").onclick = () => handleInvite("https://twitter.com/intent/tweet?url=" + window.location.href);
 
 document.getElementById("toSurvey").onclick = () => { 
-    document.getElementById("invite").classList.add("hidden"); 
-    document.getElementById("surveyPage").classList.remove("hidden"); 
+  document.getElementById("invite").classList.add("hidden"); 
+  document.getElementById("surveyPage").classList.remove("hidden"); 
 };
 
-/* --- FIXED SURVEY BUTTON --- */
-document.getElementById("openOffer").onclick = function() {
-    const finalId = getOrSetUser(); // Directly fetch valid ID here
+document.getElementById("openOffer").onclick = () => {
     surveyActive = true;
-    const surveyUrl = "https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + encodeURIComponent(finalId);
-    window.open(surveyUrl, "_blank");
-};
+    const currentId = getValidUser();
+   window.open(
+  "https://offers.cpx-research.com/index.php?app_id=30494&user_id=" + window.CPX_USER_ID,
+  "_blank"
+);
+
 
 window.onfocus = () => {
     if(surveyActive && surveyProgress < 100) {
@@ -272,8 +283,8 @@ window.onfocus = () => {
 };
 
 document.getElementById("toDetails").onclick = () => { 
-    document.getElementById("surveyPage").classList.add("hidden"); 
-    document.getElementById("details").classList.remove("hidden"); 
+  document.getElementById("surveyPage").classList.add("hidden"); 
+  document.getElementById("details").classList.remove("hidden"); 
 };
 </script>
 
