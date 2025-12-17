@@ -7,7 +7,7 @@
 
 <style>
 /* ===== RESPONSIVE BASE DESIGN ===== */
-*, *::before, *::after { box-sizing: border-box; } /* Prevents layout breaking on mobile */
+*, *::before, *::after { box-sizing: border-box; } 
 
 body{
   margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
@@ -33,7 +33,6 @@ body::before{
   h1 { font-size: 1.8rem !important; }
   h2 { font-size: 1.6rem !important; }
   .btn { font-size: 1.1rem !important; padding: 16px 20px !important; width: 100% !important; }
-  .bigReward { font-size: 2.2rem !important; }
 }
 
 .hidden{display:none !important}
@@ -51,11 +50,9 @@ p { font-size: 1.1rem; line-height: 1.5; color: #555; }
   -webkit-tap-highlight-color: transparent;
 }
 .btn:hover{transform:scale(1.02); box-shadow:0 15px 35px rgba(255,215,0,0.5);}
-.btn-back { background: #eee; color: #777; font-size: 1rem; margin-top: 25px; box-shadow: none; width: auto !important; display: inline-block; }
 
-/* Reward Popup */
 #rewardOverlay #rewardBox { width: 92%; max-width: 700px; padding: 40px 20px; }
-.bigReward{ font-size: 3.5rem; font-weight:900; color:#d4a200; animation:glow 2s infinite; margin: 20px 0; }
+.bigReward{ font-size: 3rem; font-weight:900; color:#d4a200; animation:glow 2s infinite; margin: 20px 0; }
 
 #wheelOverlay, #rewardOverlay{
   display:none; position:fixed; inset:0;
@@ -65,9 +62,8 @@ p { font-size: 1.1rem; line-height: 1.5; color: #555; }
 #wheelContainer{
     position:relative; width: 280px; height: 280px; margin:auto;
     border: 10px solid #d4af37; border-radius: 50%; background: #fff;
-    animation: pulse 2.5s infinite ease-in-out;
 }
-@media (min-width: 800px) { #wheelContainer { width: 450px; height: 450px; border-width: 15px; } }
+@media (min-width: 800px) { #wheelContainer { width: 450px; height: 450px; } }
 
 #pointer {
     position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
@@ -76,14 +72,13 @@ p { font-size: 1.1rem; line-height: 1.5; color: #555; }
 }
 canvas{ border-radius:50%; width: 100%; height: 100%; transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1); }
 
-.progressContainer{ width:100%; background:#f0f0f0; height:25px; border-radius:100px; overflow:hidden; margin: 20px 0; border: 2px solid #ddd; }
+.progressContainer{ width:100%; background:#f0f0f0; height:25px; border-radius:100px; overflow:hidden; margin: 20px 0; }
 .progressBar{ height:100%; width:0%; background:linear-gradient(90deg,#ffd700,#ffb347); transition: width 0.8s ease; }
 
 input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border: 2px solid #eee; font-size: 1rem; }
 .invite-link-box { background: #f9f9f9; padding: 15px; border-radius: 15px; border: 2px dashed #b99600; font-weight: bold; margin-bottom: 20px; font-size: 0.9rem; word-break: break-all; }
 
 @keyframes fadeUp{ from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
-@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 @keyframes glow{ 0%, 100%{filter:drop-shadow(0 0 10px gold)} 50%{filter:drop-shadow(0 0 20px gold)} }
 </style>
 </head>
@@ -94,11 +89,8 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
 <div id="home" class="card">
   <h1>CHRISTMASGIFTZ</h1>
   <p>Exclusive Holiday Giveaway. Try your luck and win premium prizes today!</p>
-  <img src="https://images.unsplash.com/photo-1608889175250-c3b0c1667b5d?auto=format&fit=crop&w=400" style="width:200px; max-width: 60%; margin: 20px 0; animation: pulse 3s infinite;">
+  <img src="https://images.unsplash.com/photo-1608889175250-c3b0c1667b5d?auto=format&fit=crop&w=400" style="width:200px; max-width: 60%; margin: 20px 0;">
   <button class="btn" id="tryBtn">SPIN NOW</button>
-  <div style="margin-top:20px">
-    <script src="https://www.highperformanceformat.com/9c7d946e2105f9e6a07ffc49d5b61345/invoke.js"></script>
-  </div>
 </div>
 
 <div id="wheelOverlay">
@@ -129,11 +121,6 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
   <button class="btn" id="tg" style="background:#0088cc; color:white;">Telegram</button>
   <button class="btn" id="tw" style="background:#1DA1F2; color:white;">Twitter</button>
   <p id="inviteStatus" style="font-weight: 800; font-size: 1.3rem; margin: 15px 0;">Invited: 0 / 7</p>
-
-  <div style="margin: 20px 0">
-    <div id="container-dd91a6316ac3de5bf92224509e1eba7e"></div>
-  </div>
-
   <button class="btn hidden" id="toSurvey" style="background: #b99600; color: white;">PROCEED TO SURVEY</button>
 </div>
 
@@ -142,12 +129,6 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
   <p>Complete the task below to claim your reward.</p>
   <div class="progressContainer"><div id="bar" class="progressBar"></div></div>
   <p id="progStatus" style="font-size: 1.3rem; font-weight: bold;">0% Complete</p>
-  
-  <div style="margin:20px auto; max-width:300px; text-align:center;">
-    <div style="font-size:12px; color:#999; margin-bottom:6px;">Advertisement</div>
-    <div id="survey-ad-slot"></div>
-  </div>
-
   <button class="btn" id="openOffer">OPEN SURVEY TASK</button>
   <button class="btn hidden" id="toDetails" style="background: #28a745; color: white;">PROCEED TO SHIPPING</button>
 </div>
@@ -158,13 +139,11 @@ input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 40px; border:
   <input type="text" placeholder="Address">
   <input type="email" placeholder="Email">
   <button class="btn" onclick="alert('Success! Your package is being prepared.')">SUBMIT DETAILS</button>
-  <button class="btn btn-back" id="backToSurvey">Back</button>
 </div>
 
 </div>
 
 <script>
-/* ========= CPX USER ID ========= */
 let userId = localStorage.getItem("cpx_user_id") || "user_" + Math.random().toString(36).substring(2, 10);
 localStorage.setItem("cpx_user_id", userId);
 
@@ -183,8 +162,7 @@ let surveyActive = false;
 
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
-const totalSlices = rewards.length;
-const sliceDeg = 360 / totalSlices;
+const sliceDeg = 360 / rewards.length;
 
 function drawWheel() {
   rewards.forEach((r, i) => {
@@ -205,14 +183,19 @@ function drawWheel() {
 }
 drawWheel();
 
+// Fixed: Wheel triggers immediately, ad script loads silently
 document.getElementById("tryBtn").onclick = () => { 
     document.getElementById("home").classList.add("hidden"); 
     document.getElementById("wheelOverlay").style.display = "flex"; 
+    // Trigger ad logic here without blocking UI
+    const adScript = document.createElement("script");
+    adScript.src = "https://www.highperformanceformat.com/9c7d946e2105f9e6a07ffc49d5b61345/invoke.js";
+    document.head.appendChild(adScript);
 };
 
 canvas.onclick = () => {
     if(selectedReward) return;
-    const randomIdx = Math.floor(Math.random() * totalSlices);
+    const randomIdx = Math.floor(Math.random() * rewards.length);
     selectedReward = rewards[randomIdx];
     const stopAt = 3600 + (270 - (randomIdx * sliceDeg) - (sliceDeg / 2));
     canvas.style.transform = `rotate(${stopAt}deg)`;
@@ -237,9 +220,9 @@ function handleInvite(url) {
 }
 
 document.getElementById("wa").onclick = () => handleInvite("whatsapp://send?text=" + encodeURIComponent(window.location.href));
-document.getElementById("ig").onclick = () => { alert("Post Link to Story!"); handleInvite("#"); };
 document.getElementById("tg").onclick = () => handleInvite("https://t.me/share/url?url=" + encodeURIComponent(window.location.href));
 document.getElementById("tw").onclick = () => handleInvite("https://twitter.com/intent/tweet?url=" + encodeURIComponent(window.location.href));
+document.getElementById("ig").onclick = () => { alert("Post Link to Story!"); handleInvite("#"); };
 
 document.getElementById("toSurvey").onclick = () => { 
     document.getElementById("invite").classList.add("hidden"); 
@@ -265,10 +248,6 @@ window.onfocus = () => {
 document.getElementById("toDetails").onclick = () => { 
     document.getElementById("surveyPage").classList.add("hidden"); 
     document.getElementById("details").classList.remove("hidden"); 
-};
-document.getElementById("backToSurvey").onclick = () => { 
-    document.getElementById("details").classList.add("hidden"); 
-    document.getElementById("surveyPage").classList.remove("hidden"); 
 };
 </script>
 
